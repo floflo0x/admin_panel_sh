@@ -22,11 +22,14 @@
     "request": "^2.88.2",
     "request-promise-any": "^1.0.9"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "devDependencies": {
     "nodemon": "^3.0.1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/floflo0x/admin_panelsh.git"
+    "url": "git+https://github.com/floflo0x/admin_panel_sh.git"
   }
 }
