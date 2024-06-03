@@ -1,0 +1,184 @@
+<%- include("../includes/head.ejs"); %>
+
+<link rel="stylesheet" href="/style1.css">
+
+<body class="bg-light text-white">
+	<style type="text/css">
+		.fa-trash:hover {
+	    	color: red !important;
+	    }
+
+	    #addInput {
+			border: 0;
+			color: white;
+			background: black;
+			padding: 10px;
+			border-radius: 20px;
+		}
+
+		#section1 {
+			padding: 0 10%;
+		}
+	</style>
+
+	<header class="header1">
+	  <%- include('../includes/navbar.ejs'); %>
+	</header>
+
+	<section>
+		<div class="container-fluid p-0" style="margin-top: 45px;" id="cont1">
+		    <div class="row">
+			    <%- include('../includes/navbar1.ejs'); %>
+
+		      	<%- include('../includes/navbar2.ejs'); %>
+
+		      	<div class="col-12 border text-black" id="section1" style="background: #eef1f5;">
+		      		<div class="text-center" style="margin-top: 30px;">
+		      			Edit Options
+		      		</div>
+		      		<hr />
+		      		<div class="pt-4 ms-3">
+				        <p style="font-size: 13px;">
+				        	<i class="fa-solid fa-house me-2" style="color: #333333;"></i>
+				        	<a href="/v1/home" class="me-2 tabs" style="text-decoration: none; color: black;">Dashboard</a><span class="me-2">/</span>
+				        	<a href="/v1/products" class="me-2 tabs" style="text-decoration: none; color: black;">Ecommerce</a><span class="me-2">/</span>
+				        	<a class="me-2 tabs" style="text-decoration: none; color: grey;">Edit Options</a>
+				        </p>
+				    </div>
+		      		<div class="col-12 text-center">
+					    <% if(errorMessage) { %>
+					    	<div class="alert alert-danger" role="alert"><%= errorMessage %></div>
+					    <% } %>
+				    </div>
+		      		<form action="/v1/editOptions" method="POST">
+		      			<% if (optionId !== null) { %>
+							<% if (Array.isArray(optValue) && Array.isArray(affect_price) && Array.isArray(optionId)) { %>
+								<div class="dataTable p-2">
+									<% for (let i = 0; i < optionId.length; i++) { %>
+										<div class="d-flex d-flex justify-content-evenly align-items-center">
+											<div class="mb-3">
+												<label for="egInputPrice<%= i %>" class="form-label">Price</label>
+												<input type="number" name="affect_price" class="form-control" id="egInputPrice<%= i %>" placeholder="€ 0" step="any" value="<%= affect_price[i] %>">
+											</div>
+											<div class="mb-3">
+												<label for="egInputOption<%= i %>" class="form-label">
+													Option Name
+												</label>
+												<input type="text" name="optValue" class="form-control" id="egInputOption<%= i %>" placeholder="e.g., 3 Mois" value="<%= optValue[i] %>" />
+											</div>
+											<div class="mb-3">
+												<a href="/v1/delOption/?oid=<%= optionId[i] %>&pid=<%= oldInput.id %>" style="text-decoration: none;">
+													<i class="fa-solid fa-trash" style="color: #f20707;"></i>
+												</a>
+											</div>
+										</div>
+									<% } %>
+								</div>
+							<% } else { %>
+								<div class="dataTable p-2 d-flex justify-content-around align-items-center">
+									<div class="mb-3">
+										<label for="egInput1" class="form-label">Price</label>
+										<input type="number" name="affect_price" class="form-control" id="egInput1" placeholder="€ 0" step="any" value="<%= affect_price %>">
+									</div>
+									<div class="mb-3">
+										<label for="egInput2" class="form-label">Option Name</label>
+										<input type="text" name="optValue" class="form-control" id="egInput2" placeholder="e.g., 3 Mois" value="<%= optValue %>">
+									</div>
+									<div class="mb-3">
+										<a href="/v1/delOption/?oid=<%= optionId %>&pid=<%= oldInput.id %>" style="text-decoration: none;">
+											<i class="fa-solid fa-trash" style="color: #f20707;"></i>
+										</a>
+									</div>
+								</div>
+							<% } %>
+						<% } %>
+						<div class="mt-2 mb-2">
+							<select class="form-select" name="warranty" aria-label="Default select example" id="warrantySelect">
+							  	<option selected value="">Open this select menu</option>
+							  	<option value="Garantie">Garantie</option>
+							  	<option value="Abonnement">Abonnement</option>
+							  	<option value="Options">Options</option>
+							  	<option value="Option">Option</option>
+							</select>
+						</div>
+							<div class="mb-3">
+								<label for="exampleFormControlInput1" class="form-label">Price</label>
+								<input type="number" name="affect_price" class="form-control" id="exampleFormControlInput1" placeholder="€ 0" step="any" required>
+							</div>
+							<div class="mb-3">
+								<label for="exampleFormControlInput2" class="form-label">Option Name</label>
+								<input type="text" name="optValue" class="form-control" id="exampleFormControlInput2" placeholder="e.g., 3 Mois" required>
+							</div>
+						<div class="mb-3">
+							<button type="button" id="addInput">Add More +</button>
+						</div>
+						<div class="mb-2" id="dTable"></div>
+				</div>
+				<div class="col-12 mt-3 text-center" style="background: #eef1f5; margin-left: 54px;">
+					<input type="hidden" name="pid2" value="<%= oldInput.id %>">
+					<button type="submit" class="btn p-2 btn-primary text-white">Submit</button>
+					</form>
+				</div>				
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="container-fluid" style="height: 100px; background: #eef1f5;"></div>
+	</section>
+
+	<script src="/script3.js"></script>
+
+	<script>
+    	const w1 = '<%- JSON.stringify(warranty) %>';
+    </script>
+
+    <script>
+    	globalThis.document.addEventListener('DOMContentLoaded', () => {
+    		const w2 = JSON.parse(w1);
+
+			if (w2 !== '') {
+		        const warrantySelect = document.getElementById("warrantySelect");
+
+		        warrantySelect.querySelectorAll('option').forEach(i => {
+		        	// console.log(i.value);
+		        	if (i.value == w2) {
+						i.selected = true;
+					}
+		        })
+	      	}
+
+	      	let counter = 3;
+
+			// Function to add new input fields
+			function addInput() {
+			    // Create a new div element
+			    let newInputDiv = document.createElement("div");
+
+			    // Set the HTML content for the new div
+			    newInputDiv.innerHTML = `
+			        <div class="mt-2">
+			          <div class="mb-3">
+			            <label for="exampleOptInput${counter}" class="form-label">Price</label>
+			            <input type="number" name="affect_price" class="form-control" id="exampleOptInput${counter}" placeholder="€ 0" value="<%= oldInput.affect_price %>" step="any">
+			          </div>
+			          <div class="mb-3">
+			            <label for="exampleInput${counter}" class="form-label">Option Name</label>
+			            <input type="text" name="optValue" class="form-control" id="exampleInput${counter}" placeholder="e.g., 3 Mois">
+			          </div>
+			        </div>
+			    `;
+
+			    // Increment the counter for unique IDs
+			    counter++;
+
+			    // Append the new div to the div with id "dataTable"
+			    document.getElementById("dTable").appendChild(newInputDiv);
+			}
+
+			document.getElementById("addInput").addEventListener("click", addInput);
+	    })
+	</script>
+
+	<%- include("../includes/end.ejs"); %>
+</body>
